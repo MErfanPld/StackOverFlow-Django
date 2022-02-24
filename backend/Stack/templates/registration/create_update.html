@@ -1,0 +1,37 @@
+{% extends 'registration/base_admin.html' %}
+{% block admin_content %}
+{% load crispy_forms_tags %}
+
+<div class="col-md-12">
+    <div class="card card-success">
+        <div class="card-header">
+            <h3 class="card-title mb-0 float-left">افزودن سوال</h3>
+        </div>
+        <div class="card-body">
+
+            <form action="" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="row">
+                    <div class="col-6">
+                        {{form.title|as_crispy_field }}
+                        <small class="jumboron">لطفا یک حرف انگلیسی در نام سوال بگزارید.</small>
+                    </div>
+                    <div class="col-6">
+                        {{form.category|as_crispy_field }}
+                    </div>
+                    <div class="col-6">
+                        {{form.image|as_crispy_field }}
+                    </div>
+                    <div class="col-12">
+                        {{form.body|as_crispy_field }}
+                    </div>
+
+                    {{form.media}}
+                    <!--                    {{form.as_p}}-->
+                </div>
+                <button type="submit" class="btn btn-outline-success btn-lg">ارسال</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

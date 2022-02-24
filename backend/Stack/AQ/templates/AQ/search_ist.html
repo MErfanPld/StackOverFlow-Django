@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="latest-posts">
+    <div class="container-fluid">
+        <div class="col-md-12">
+            <div class="blog-title-span">
+                <span class="title"> جستوجو : {{ search }}</span>
+            </div>
+
+            {% for question in object_list %}
+            <div class="col-md-4">
+                <div class="post-box">
+                    <a href="{{ question.get_absolute_url }}">
+                        <figure>
+                            <img src="{{ question.image.url }}" alt="">
+                            <figcaption class="meta-fig">
+                                <span><i class="fa fa-clock-o"></i> {{ question.created |date:"Y-M" }}</span>&nbsp;
+                                <!--                              <span><i class="fa fa-comment-o"></i> 12</span>-->
+                            </figcaption>
+                            <figcaption class="view">
+                                {% for cat in question.category.all %}
+                                <span>{{ cat.title }}</span>
+                                {% endfor %}
+                            </figcaption>
+                        </figure>
+                        <div class="text-p">
+                            <!--                           <h5>چگونه از اشخاص مطالبی که دوست نداریم دوری کنیم ؟</h5>-->
+                            <p>{{ question.body | striptags|truncatewords:23 }}</p>
+                            <div class="text-rigt">
+                                <a href="{{ question.get_absolute_url }}">ادامه ...</a></div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            {% empty %}
+            <h4 class="jumbotron">متاسفانه موردی برای نمایش وجود ندارد ...</h4>
+            {% endfor %}
+        </div>
+
+        <div class="col-md-12 text-center">
+            <nav aria-label="Page navigation example">
+                <ul class="pagination">
+                    <li class="page-item"><a class="page-link" href="#">قبلی</a></li>
+                    <li class="page-item"><a class="page-link" href="#">1</a></li>
+                    <li class="page-item"><a class="page-link" href="#">2</a></li>
+                    <li class="page-item"><a class="page-link" href="#">3</a></li>
+                    <li class="page-item"><a class="page-link" href="#">بعدی</a></li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+</div>
+<div class="clear-fix"></div>
+{% endblock %}

@@ -1,0 +1,115 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% load widget_tweaks %}
+
+{% block content %}
+<div class="single_post">
+    <div class="container-fluid">
+        <div class="col-md-2"></div>
+        <div class="col-md-8">
+            <div class="row">
+                <div class="col-md-2"></div>
+                <div class="col-md-8">
+                    <div class="post_img">
+                        <img src="{{ question.image.url }}" alt="">
+                    </div>
+                </div>
+                <div class="col-md-2"></div>
+            </div>
+            <div class="posts_meta text-center">
+                <!--                  <span><i class="fa fa-comment-o"></i> 25 نظر</span>-->
+                <span><i class="fa fa-archive"></i> اقتصادی</span>
+                <span><i class="fa fa-comment"></i> {{answers.count}} پاسخ</span>
+                <span><i class="fa fa-user"></i><a href="{% url 'home:user_profile' question.user_id %}"
+                                                   style="color: #999"> {{question.user.get_full_name}} </a></span>
+                <span><i class="fa fa-calendar"></i> {{ question.created |date:"Y-M" }}</span>
+            </div>
+
+            <div class="post_content">
+                <h4>{{ question.title }}</h4>
+                <p>{{ question.body|safe }}</p>
+                <a href="{% url 'home:like' question.id %}" class="{% if can_like %} disabled {% endif %} btn btn-danger btn-block">
+                    Like {{ question.like_count }}
+                </a>
+            </div>
+
+            {% if user.is_authenticated %}
+            <div class="comments_form">
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="form-row">
+                        {{form.as_p}}
+                        {{form.media}}
+                        <div class="col-md-12">
+                            <div class="text-left">
+                                <button class="btn btn-primary">ثبت پاسخ</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            {% else %}
+            <p class="alert alert-danger" role="alert">لطفا <a class="alert-link"
+                                                               href="{% url 'account:login' %}">وارد</a> حساب کاربری خود
+                شوید.</p>
+            {% endif %}
+
+
+            {% for answer in answers %}
+            <div class="comments_form">
+                <label>زمان پاسخ : {{answer.created|timesince}}</label>
+                <form>
+                    <div class="form-row">
+                        <div class="col-md-6">
+                            <label>نام کاربر :<a href="{% url 'home:user_profile' user.pk %}"> {{ answer.user.get_full_name }}</a></label>
+                        </div>
+                        <div class="col-md-12">
+                            <p>{{ answer.body | striptags }}</p>
+                        </div>
+
+
+                        <!--                        {% if request.user.is_authenticated %}-->
+                        <!--                        <div class="comments_form">-->
+                        <!--                            <form action="{% url 'home:reply' question.id answer.id %}" method="post">-->
+                        <!--                                {% csrf_token %}-->
+                        <!--                                <div class="form-row">-->
+                        <!--                                    {{reply_form.as_p}}-->
+                        <!--                                    &lt;!&ndash;                                    {{reply_form.media}}&ndash;&gt;-->
+                        <!--                                    <div class="col-md-12">-->
+                        <!--                                        <div class="text-left">-->
+                        <!--                                            <button class="btn btn-primary">ثبت پاسخ</button>-->
+                        <!--                                        </div>-->
+                        <!--                                    </div>-->
+                        <!--                                </div>-->
+                        <!--                            </form>-->
+                        <!--                        </div>-->
+                        <!--                        {% endif %}-->
+
+                        {% with replies=answer.ranswers.all %}
+                        {% for reply in replies %}
+                        <div class="col-md-12">
+                            <p>نام کاربر : {{ reply.user }} <br>{{ reply.body | striptags }}</p>
+                        </div>
+                        {% endfor %}
+                        {% endwith %}
+                    </div>
+                </form>
+                {% empty %}
+                <h4 class="jumbotron">پاسخی هنوز ثبت نشده است ...</h4>
+            </div>
+            {% endfor %}
+            </form>
+        </div>
+    </div>
+</div>
+</div>
+
+<script>
+    function myFunction(x) {
+  x.classList.toggle("fa-thumbs-down");
+}
+
+
+</script>
+{% endblock %}

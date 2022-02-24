@@ -1,0 +1,124 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="latest-posts">
+    <div class="container-fluid">
+        <div class="col-md-9">
+            <div class="blog-title-span">
+                <span class="title">{{ AllCategory.title }}</span>
+            </div>
+            {% for question in object_list %}
+            <div class="col-md-4">
+                <div class="post-box">
+                    <a href="{{ question.get_absolute_url }}">
+                        <figure>
+                            <img src="{{ question.image.url }}" alt="">
+                            <figcaption class="meta-fig">
+                                <span><i class="fa fa-clock-o"></i> {{ question.created |date:"Y-M" }}</span>&nbsp;
+                                <!--                              <span><i class="fa fa-comment-o"></i> 12</span>-->
+                            </figcaption>
+                            <figcaption class="view">
+                                {% for cat in question.category.all %}
+                                <span>{{ cat.title }}</span>
+                                {% endfor %}
+                            </figcaption>
+                        </figure>
+                        <div class="text-p">
+                            <!--                           <h5>چگونه از اشخاص مطالبی که دوست نداریم دوری کنیم ؟</h5>-->
+                            <p>{{ question.body | striptags|truncatewords:23 }}</p>
+                            <div class="text-rigt">
+                                <a href="{{ question.get_absolute_url }}">ادامه ...</a></div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        <div class="col-md-3 main-content">
+            <div class="l-sidebar">
+                <div class="cat-sidebar">
+                    <span class="title">دسته بندی مطالب</span>
+                    <div class="text-left"><i class="fa fa-folder-o"></i></div>
+                    <ul>
+                        {% for cat in AllCategory %}
+                        <li><a href="{% url 'home:category' cat.slug %}">{{ cat.title }}</a><span>{{ object_list.count }}</span>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+            <div class="top-sidebar-r">
+                <span class="title">عکس</span>
+                <a href="#">
+                    <div class="bx">
+                        <div class="col-md-6">
+                            <div class="img-box">
+                                <figure>
+                                    <img src="img/parsitarh-1038x515.png" alt="">
+                                    <figcaption><span>4</span></figcaption>
+                                </figure>
+                            </div>
+                        </div>
+                        <div class="col-md-6 ">
+                            <div class="meta">
+                                <h5>
+                                    عنوان برای متن ارسال شده</h6>
+                                    <span><i class="fa fa-clock-o"></i> 99/3/20</span>
+                                    <div class="text-left">
+                                        <sub><i class="fa fa-comment"></i> 246</sub>
+                                    </div>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+                <a href="#">
+                    <div class="bx">
+                        <div class="col-md-6">
+                            <div class="img-box">
+                                <figure>
+                                    <img src="img/1733753707Capture.png" alt="">
+                                    <figcaption><span>2</span></figcaption>
+                                </figure>
+                            </div>
+                        </div>
+                        <div class="col-md-6 ">
+                            <div class="meta">
+                                <h5>
+                                    لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان
+                                    گرافیک است. چاپگرها و... متن ارسال شده</h6>
+                                    <span><i class="fa fa-clock-o"></i> 99/3/20</span>
+                                    <div class="text-left">
+                                        <sub><i class="fa fa-comment"></i> 26</sub>
+                                    </div>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <br>
+
+
+        </div>
+        <div class="col-md-12 text-center">
+            <nav aria-label="Page navigation example">
+                <ul class="pagination">
+                    {% if page_obj.has_previous %}
+                    <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">قبلی</a>
+                    </li>
+                    {% endif %}
+                    {% for page in paginator.page_range %}
+                    <li class="page-item"><a class="page-link" href="?page= {{ page }}">{{ page }}</a></li>
+                    {% endfor %}
+                    {% if page_obj.has_next %}
+                    <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">بعدی</a>
+                    </li>
+                    {% endif %}
+
+                </ul>
+            </nav>
+        </div>
+    </div>
+</div>
+<div class="clear-fix"></div>
+{% endblock %}

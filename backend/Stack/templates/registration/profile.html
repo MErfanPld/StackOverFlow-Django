@@ -1,0 +1,49 @@
+{% extends 'registration/base_admin.html' %}
+{% block admin_content %}
+{% load crispy_forms_tags %}
+
+<div class="col-md-12">
+    <div class="card card-dark">
+        <div class="card-header">
+            <h3 class="card-title mb-0 float-left">پروفایل</h3>
+        </div>
+        <div class="card-body">
+
+            <form action="" method="post" enctype="multipart/form-data" novalidate>
+                {% csrf_token %}
+                <div class="row">
+                    <div class="col-6">
+                        {{form.username|as_crispy_field }}
+                    </div>
+                    <div class="col-6">
+                        {{form.email|as_crispy_field }}
+                    </div>
+                    <div class="col-6">
+                        {{form.first_name|as_crispy_field }}
+                    </div>
+                    <div class="col-6">
+                        {{form.last_name|as_crispy_field }}
+                    </div>
+                    <div class="col-6">
+                        {{form.city|as_crispy_field }}
+                    </div>
+                    <div class="col-6">
+                        {{form.label_job|as_crispy_field }}
+                    </div>
+                    <div class="col-12">
+                        {{form.image|as_crispy_field }}
+                    </div>
+                    <div class="col-12">
+                        {{form.bio|as_crispy_field }}
+                    </div>
+
+                    {{form.media}}
+                    <!--                    {{form.as_p}}-->
+                </div>
+                    <button type="submit" class="btn btn-outline-dark btn-lg">ویرایش</button>
+
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

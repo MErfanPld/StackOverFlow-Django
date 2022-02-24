@@ -1,0 +1,50 @@
+{% extends 'registration/base_admin.html' %}
+{% block admin_content %}
+
+<div class="row">
+    <div class="col-12">
+        {% if object_list %}
+        <div class="card">
+            <!-- /.card-header -->
+            <div class="card-body table-responsive p-0">
+                <table class="table table-hover">
+                    <thead>
+                    <tr>
+                        <th>عنوان</th>
+                        <th>کاربر</th>
+                        <th>تصویر</th>
+                        <th>دسته بندی</th>
+                        <th>متن سوال</th>
+                        <th>زمان ساخت سوال</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for question in object_list %}
+                    <tr>
+                        <td><a href="{% url 'account:update' question.pk %}">{{question.title | striptags|truncatewords:20}}</a></td>
+                        <td>{{question.user.get_full_name}}</td>
+                        <td><img src="{{question.image.url}}" width="120px"></td>
+                        <td>{{question.category_to_str}}</td>
+                        <td>{{question.body| striptags|truncatewords:20 }}</td>
+                        <td>{{question.created}}</td>
+                        <td>
+                            <a href="{{ question.get_absolute_url }}" class="badge badge-info">مشاهده
+                                سوال</a>
+                            <a href="{% url 'account:delete' question.pk %}" class="badge badge-danger">حذف سوال</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <!-- /.card-body -->
+        </div>
+        <!-- /.card -->
+        {% else %}
+
+        <h3>شما هیچ سوالی ندارید در حال حاضر</h3>
+
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
